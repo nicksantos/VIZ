@@ -1,0 +1,25 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  time: 1
+  latitude: 
+  longitude: 
+  altitude: 
+  groundspeed: 
+  heading: 
+  air_temp: 
+  air_density: 
+  pressure: 
+
+two:
+  title: MyString
+  time: 1
+  latitude: 
+  longitude: 
+  altitude: 
+  groundspeed: 
+  heading: 
+  air_temp: 
+  air_density: 
+  pressure: 

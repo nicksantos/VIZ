@@ -1,0 +1,53 @@
+<p>
+  <b>Title:</b>
+  <%=h @flight.title %>
+</p>
+
+<p>
+  <b>Time:</b>
+  <%=h @flight.time %>
+</p>
+
+<p>
+  <b>Latitude:</b>
+  <%=h @flight.latitude %>
+</p>
+
+<p>
+  <b>Longitude:</b>
+  <%=h @flight.longitude %>
+</p>
+
+<p>
+  <b>Altitude:</b>
+  <%=h @flight.altitude %>
+</p>
+
+<p>
+  <b>Groundspeed:</b>
+  <%=h @flight.groundspeed %>
+</p>
+
+<p>
+  <b>Heading:</b>
+  <%=h @flight.heading %>
+</p>
+
+<p>
+  <b>Air temp:</b>
+  <%=h @flight.air_temp %>
+</p>
+
+<p>
+  <b>Air density:</b>
+  <%=h @flight.air_density %>
+</p>
+
+<p>
+  <b>Pressure:</b>
+  <%=h @flight.pressure %>
+</p>
+
+
+<%= link_to 'Edit', edit_flight_path(@flight) %> |
+<%= link_to 'Back', flights_path %>
