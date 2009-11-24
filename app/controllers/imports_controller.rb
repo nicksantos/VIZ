@@ -66,12 +66,12 @@ private
   	  params[:flight]["time"] = line[1]
       params[:flight]["latitude"] = line[3]
       params[:flight]["longitude"] = line[4]
-  	  params[:flight]["altitude"] = line[6]
+  	  params[:flight]["altitude"] = line[5]
       params[:flight]["groundspeed"] = line[11]
       params[:flight]["heading"] = line[12]
-  	  params[:flight]["air_temp"] = line[8]
-      params[:flight]["air_density"] = line[9]
-      params[:flight]["pressure"] = line[10]
+  	  params[:flight]["air_temp"] = line[7]
+      params[:flight]["air_density"] = line[8]
+      params[:flight]["pressure"] = line[9]
       flight = Flight.new(params[:flight])
     flight.save
 	end
