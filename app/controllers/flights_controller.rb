@@ -3,6 +3,8 @@ class FlightsController < ApplicationController
   # GET /flights.xml
   def index
     @flights = Flight.all
+    #Below will only get flights matching title but can by a variable that we set enables us to get specific flights from all
+    #@flights = Flight.all(:conditions => [ "title = ?", "ABC006_006"])
 
     respond_to do |format|
       format.html # index.html.erb

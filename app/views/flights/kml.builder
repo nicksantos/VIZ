@@ -9,7 +9,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
     xml.Placemark {
       xml.title(flight.time)
       xml.description {
-              xml.cdata!("#{flight.title}<br>time = #{flight.time}<br>lat = #{flight.latitude} &deg;<br>log = #{flight.latitude}  &deg;<br>alt = #{flight.altitude} feet<br>")
+              xml.cdata!("#{flight.title}<br>time = #{flight.time}<br>long = #{flight.longitude}  &deg;<br>lat = #{flight.latitude} &deg;<br>alt = #{flight.altitude} feet<br>")
       }
       xml.visibility("1")
       xml.open("1")
@@ -27,7 +27,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
       xml.Point{
         xml.extrude("1")
         xml.altitudeMode("absolute")
-        xml.coordinates("#{flight.latitude}, #{flight.latitude}, #{flight.altitude}")
+        xml.coordinates("#{flight.longitude}, #{flight.latitude}, #{flight.altitude}")
       }
     }
     end
