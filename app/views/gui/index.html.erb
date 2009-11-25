@@ -1,18 +1,14 @@
-<body onload="init()" onunload="GUnload()">
 <h1>Google Earth Flight Status Visualizer</h1>
 <table style="width: 100%; height: 400px;">
-<tr>
-  <td style="100%" valign="top">
-<table style="width: 100%; height: 400px;">
-<tr>
-  <%= render :partial => "sidebar" %>
-  <%= render :partial => 'earth' %>
-  <%= render :partial => 'map' %>
-
-</tr>
+    <tr>
+        <td style="100%" valign="top">
+            <table style="width: 100%; height: 400px;">
+                <tr>
+                    <%= render :partial => "sidebar" %>
+                    <%= render :partial => 'earth' %>
+                    <%= render :partial => 'map' %>
+                </tr>
+            </table>
+        </td>
+    </tr>
 </table>
-</td>
-</tr>
-</table>
-
-</body>
