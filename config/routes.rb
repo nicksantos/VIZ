@@ -42,6 +42,7 @@ ActionController::Routing::Routes.draw do |map|
   # consider removing or commenting them out if you're using named routes and resources.
 
   map.resources :imports
+  map.resources :gui
   map.import_proc '/import/proc/:id', :controller => "imports", :action => "proc_csv"
   ActionController::Routing::Routes.draw do |map|
     #map.resources :albums
