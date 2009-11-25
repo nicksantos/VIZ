@@ -7,6 +7,7 @@ class FlightsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @flights }
+      format.kml { render :action => "kml" }
     end
   end
 
@@ -82,4 +83,5 @@ class FlightsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
 end
