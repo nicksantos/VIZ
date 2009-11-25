@@ -5,9 +5,9 @@
     <head>
         <title>GUI: <%= controller.action_name %></title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-        <%= javascript_include_tag :all, :cache => true %>
         <%= render :partial => "head" %>
-        <%= stylesheet_link_tag 'index' %>
+        <%= javascript_include_tag :all, :cache => true %>
+        <%= stylesheet_link_tag 'gui' %>
         <%= stylesheet_link_tag 'simple-slider' %>
     </head>
         <%= yield %>
