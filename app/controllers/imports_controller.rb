@@ -3,9 +3,9 @@ class ImportsController < ApplicationController
 
   def new
     @import = Import.new
-	end
+  end
 
-	def create
+  def create
     @import = Import.new(params[:import])
 
     respond_to do |format|
@@ -17,13 +17,13 @@ class ImportsController < ApplicationController
         format.html { render :action => "new" }
       end
     end
-	end
+  end
 
-	def show
+  def show
     @import = Import.find(params[:id])
-	end
+  end
 
-	def proc_csv
+  def proc_csv
     @import = Import.find(params[:id])
     lines = parse_csv_file(@import.csv.path)
     lines.shift #comment this line out if your CSV file doesn't contain a header row
@@ -42,7 +42,7 @@ class ImportsController < ApplicationController
       flash[:error] = "CSV data processing failed."
       render :action => "show", :id => @import.id
     end
-	end
+  end
 
 private
 
@@ -59,7 +59,7 @@ private
     lines
   end
 
-	def new_release(line)
+  def new_release(line)
     params = Hash.new
       params[:flight] = Hash.new
       params[:flight]["title"] = line[0]
@@ -86,6 +86,6 @@ private
       params[:flight]["lift_coeff"] = line[19]
       flight = Flight.new(params[:flight])
     flight.save
-	end
-
+  end
+  
 end
