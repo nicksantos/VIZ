@@ -5,23 +5,25 @@ xml.instruct! :xml
 xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www.google.com/kml/ext/2.2" ) do
   xml.Document {
     xml.name("fb_debugABC006_006") #Placeholder we need to be able to get the name of the csv file
+	xml.Folder{
+		xml.name("ABC006_006")
     @flights.each do |flight|
     xml.Placemark {
-      xml.title(flight.time)
+      xml.name(flight.time)
       xml.description {
               xml.cdata!("#{flight.title}<br>time = #{flight.time}<br>long = #{flight.longitude}  &deg;<br>lat = #{flight.latitude} &deg;<br>alt = #{flight.altitude} feet<br>")
       }
       xml.visibility("1")
       xml.open("1")
-      xml.style{
+      xml.Style{
         xml.IconStyle{
-          xml.icon{xml.href("http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png")}
+          xml.Icon{xml.href("http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png")}
           xml.scale("0.5")
         }
         xml.BalloonStyle{
           xml.bgcolor("ffffffff")
           xml.textcolor("ff000000")
-          xml.text{xml.cdata!("$[name]<p>[discription]")}
+          xml.text{xml.cdata!("$[name]<p>[description]")}
         }
       }
       xml.Point{
@@ -31,5 +33,6 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
       }
     }
     end
+	}
   }
 end  

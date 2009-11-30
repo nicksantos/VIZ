@@ -13,6 +13,20 @@ function init() {
 	
 	//create map
 	this.map = new GMap2(document.getElementById("map"));
+	initMap();
+}
+function initMap() {
+
+	//set inital view of map
+	map.setCenter(new GLatLng(39.46, -74.572778), 12);
+	map.enableScrollWheelZoom();
+	// Add GHierarchicalMapTypeControl
+	map.addMapType(G_PHYSICAL_MAP);
+	
+	//add map over lay
+	var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/fd.kml');
+	//var geoXml = new GGeoXml('http://localhost:3000/flights.kml');
+	map.addOverlay(geoXml);
 }
 
 function initCB(instance) {
@@ -32,17 +46,6 @@ function initCB(instance) {
         10000 // range (inverse of zoom)
         );
     ge.getView().setAbstractView(la);
-	
-	//set inital view of map
-	map.setCenter(new GLatLng(39.46, -74.572778), 12);
-	map.enableScrollWheelZoom();
-	// Add GHierarchicalMapTypeControl
-	map.addMapType(G_PHYSICAL_MAP);
-	
-	DS_directions = new google.maps.Directions(map, null);
-	//add map over lay
-	var geoXml = new GGeoXml(href);
-	map.addOverlay(geoXml);
 	
 	// add a navigation control
 	ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
