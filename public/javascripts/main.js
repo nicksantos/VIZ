@@ -1,28 +1,49 @@
 var ge;
+
+var map;
+
 google.load("earth", "1");
 google.load("maps", "2.x");
 google.load('visualization', '1', {packages: ['gauge']});
 google.load('visualization', '1', {packages: ['areachart']});
 
 function init() {
+	//create earth
 	google.earth.createInstance('earth', initCB, failureCB);
-	var map = new GMap2(document.getElementById("map"));
-	  map.setCenter(new GLatLng(37.437657, -122.157841), 12);
-	  map.enableScrollWheelZoom();
-	  map.addControl(new GLargeMapControl3D());
-	  // Add GHierarchicalMapTypeControl
-	  map.addMapType(G_PHYSICAL_MAP);
-	  var hControl = new GHierarchicalMapTypeControl();
-	  hControl.addRelationship(G_SATELLITE_MAP, G_HYBRID_MAP, "Labels", false);
-	  map.addControl(hControl);
-	 
-	  // Add ContextMenuControl to the map
-	  map.addControl(new ContextMenuControl());
+	
+	//create map
+	this.map = new GMap2(document.getElementById("map"));
 }
 
 function initCB(instance) {
+	
+	//get the kml for the map and earth from this URL
+	var href = 'http://localhost:3000/flights.kml';
+	
 	ge = instance;
 	ge.getWindow().setVisibility(true);
+	//set inital view of earth
+	var la = ge.createLookAt('');
+      la.set(39.46,  -74.572778,
+        0, // altitude
+        ge.ALTITUDE_RELATIVE_TO_GROUND,
+        0, // heading
+        0, // straight-down tilt
+        10000 // range (inverse of zoom)
+        );
+    ge.getView().setAbstractView(la);
+	
+	//set inital view of map
+	map.setCenter(new GLatLng(39.46, -74.572778), 12);
+	map.enableScrollWheelZoom();
+	// Add GHierarchicalMapTypeControl
+	map.addMapType(G_PHYSICAL_MAP);
+	
+	DS_directions = new google.maps.Directions(map, null);
+	//add map over lay
+	//var geoXml = new GGeoXml("http://localhost:3000/flights.kml");
+	var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/doc.kml');
+	map.addOverlay(geoXml);
 	
 	// add a navigation control
 	ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
@@ -30,10 +51,8 @@ function initCB(instance) {
 	// add some layers
 	ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
 	ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
-
-	// create the tour by fetching it out of a KML file
-	var href = 'http://localhost:3000/flights.kml'
 	
+	// create the tour by fetching it out of a KML file
 	google.earth.fetchKml(ge, href, function(kmlObject) {
 	  if (!kmlObject) {
 		// wrap alerts in API callbacks and event handlers
@@ -69,8 +88,7 @@ function initCB(instance) {
 	  }, 50);
 	});
 	
-	document.getElementById('installed-plugin-version').innerHTML =
-	  ge.getPluginVersion().toString();
+	
 }
 
 function failureCB(errorCode) {
