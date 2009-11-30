@@ -1,3 +1,4 @@
+var v;
 var ge;
 var map;
 var fuel_gauge_viz;
@@ -37,6 +38,7 @@ function initCB(instance) {
 	
 	
 	updateFuelGauge();
+	updateAirChart();
 	//get the kml for the map and earth from this URL
 	var href = 'http://localhost:3000/flights.kml';
 	
@@ -140,6 +142,11 @@ function updateAirChart(){
 	airChart.addRows(1);
 	airChart.setCell(3, 0, '14:00');
 	airChart.setCell(3, 1, 281.758);
+	// Create and draw the visualization.
+	//$('#temp_chart').empty();
+    //new google.visualization.AreaChart(document.getElementById('temp_chart')).
+    //      draw(airChart, null);
+	v.draw(airChart,null);
 }
 
 function drawAirChart() {
@@ -156,8 +163,9 @@ function drawAirChart() {
       airChart.setCell(2, 1, 281.758);
     
       // Create and draw the visualization.
-      new google.visualization.AreaChart(document.getElementById('temp_chart')).
-          draw(airChart, null);
+	  document.getElementById('wind_mag').empty();
+      v = new google.visualization.AreaChart(document.getElementById('temp_chart'));
+	  v.draw(airChart, null);
 }
 
 function drawWindChart() {
