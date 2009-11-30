@@ -136,6 +136,12 @@ function updateFuelGauge() {
           draw(fuelGauge, null);
 }
 
+function updateAirChart(){
+	airChart.addRows(1);
+	airChart.setCell(3, 0, '14:00');
+	airChart.setCell(3, 1, 281.758);
+}
+
 function drawAirChart() {
       // Create and populate the data table.
       this.airChart = new google.visualization.DataTable();
