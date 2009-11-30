@@ -9,7 +9,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 		xml.name("ABC006_006")
     @flights.each do |flight|
     xml.Placemark {
-      xml.name(flight.time)
+      xml.name(Time.at(flight.time).getgm.strftime("%H:%M:%S"))
       xml.description {
               xml.cdata!("#{flight.title}<br>time = #{flight.time}<br>long = #{flight.longitude}  &deg;<br>lat = #{flight.latitude} &deg;<br>alt = #{flight.altitude} feet<br>")
       }
