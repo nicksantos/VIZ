@@ -1,7 +1,8 @@
 var ge;
-
 var map;
-
+var fuel_gauge_viz;
+var air_temp_viz;
+var wind_mag_viz;
 google.load("earth", "1");
 google.load("maps", "2.x");
 google.load('visualization', '1', {packages: ['gauge']});
@@ -14,6 +15,9 @@ function init() {
 	//create map
 	this.map = new GMap2(document.getElementById("map"));
 	initMap();
+	drawFuelGauge();
+	drawAirChart();
+	drawWindChart();
 }
 function initMap() {
 
@@ -24,13 +28,15 @@ function initMap() {
 	map.addMapType(G_PHYSICAL_MAP);
 	
 	//add map over lay
-	var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/fd.kml');
-	//var geoXml = new GGeoXml('http://localhost:3000/flights.kml');
+	//var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/fd.kml');
+	var geoXml = new GGeoXml('http://localhost:3000/flights.kml');
 	map.addOverlay(geoXml);
 }
 
 function initCB(instance) {
 	
+	
+	updateFuelGauge();
 	//get the kml for the map and earth from this URL
 	var href = 'http://localhost:3000/flights.kml';
 	
@@ -109,6 +115,61 @@ function pauseTour() {
 
 function resetTour() {
 	ge.getTourPlayer().reset();
+}
+
+function drawFuelGauge() {
+      // Create and populate the data table.
+      this.fuelGauge = new google.visualization.DataTable();
+      fuelGauge.addColumn('string', 'Label');
+      fuelGauge.addColumn('number', 'Value');
+      fuelGauge.addRows(3);
+      fuelGauge.setValue(0, 0, '');
+      fuelGauge.setValue(0, 1, 80);      
+      // Create and draw the visualization.
+      new google.visualization.Gauge(document.getElementById('gauge')).
+          draw(fuelGauge, null);
+}
+
+function updateFuelGauge() {
+	fuelGauge.setValue(0, 1, 100);
+	new google.visualization.Gauge(document.getElementById('gauge')).
+          draw(fuelGauge, null);
+}
+
+function drawAirChart() {
+      // Create and populate the data table.
+      this.airChart = new google.visualization.DataTable();
+      airChart.addColumn('string', 'Time');
+      airChart.addColumn('number', 'Temp(K)');
+      airChart.addRows(3);
+      airChart.setCell(0, 0, '13:30');
+      airChart.setCell(1, 0, '13:40');
+      airChart.setCell(2, 0, '13:50');
+      airChart.setCell(0, 1, 281.744);
+      airChart.setCell(1, 1, 281.752);
+      airChart.setCell(2, 1, 281.758);
+    
+      // Create and draw the visualization.
+      new google.visualization.AreaChart(document.getElementById('temp_chart')).
+          draw(airChart, null);
+}
+
+function drawWindChart() {
+    // Create and populate the data table.
+    var windChart = new google.visualization.DataTable();
+    windChart.addColumn('string', 'Time');
+    windChart.addColumn('number', 'Temp(K)');
+    windChart.addRows(3);
+    windChart.setCell(0, 0, '13:30');
+    windChart.setCell(1, 0, '13:40');
+    windChart.setCell(2, 0, '13:50');
+    windChart.setCell(0, 1, 5.821);
+    windChart.setCell(1, 1, 5.803);
+    windChart.setCell(2, 1, 5.79);
+  
+    // Create and draw the visualization.
+    new google.visualization.AreaChart(document.getElementById('wind_mag')).
+        draw(windChart, null);
 }
 
 function formatTime(sec) {
