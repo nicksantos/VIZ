@@ -41,8 +41,7 @@ function initCB(instance) {
 	
 	DS_directions = new google.maps.Directions(map, null);
 	//add map over lay
-	//var geoXml = new GGeoXml("http://localhost:3000/flights.kml");
-	var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/doc.kml');
+	var geoXml = new GGeoXml(href);
 	map.addOverlay(geoXml);
 	
 	// add a navigation control
@@ -65,7 +64,10 @@ function initCB(instance) {
 	
 	  // Show the entire KML file in the plugin.
 	  ge.getFeatures().appendChild(kmlObject);
-	
+	  var arr = xml2array(href);
+	  
+	  $('#time_value').html("<div>"+arr['xml']['kml']['Document'][0]);
+	  
 	  // Walk the DOM looking for a KmlTour
 	  walkKmlDom(kmlObject, function() {
 		if (this.getType() == 'KmlTour') {
