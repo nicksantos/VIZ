@@ -1,6 +1,10 @@
 class ImportsController < ApplicationController
   #before_filter :login_required #protect controller from anonymous users
 
+  def index
+	@import = Import.new
+  end
+  
   def new
     @import = Import.new
   end
@@ -41,7 +45,7 @@ class ImportsController < ApplicationController
       end
       @import.save
       flash[:notice] = "CSV data processing was successful."
-      redirect_to :action => "show", :id => @import.id
+      redirect_to :action => "root"
     else
       flash[:error] = "CSV data processing failed."
       render :action => "show", :id => @import.id

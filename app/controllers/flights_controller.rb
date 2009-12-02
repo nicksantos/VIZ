@@ -77,6 +77,7 @@ class FlightsController < ApplicationController
     end
   end
 
+  
   # DELETE /flights/1
   # DELETE /flights/1.xml
   def destroy
