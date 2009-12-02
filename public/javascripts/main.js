@@ -1,3 +1,4 @@
+var v;
 var ge;
 var map;
 var fuel_gauge_viz;
@@ -9,34 +10,46 @@ google.load('visualization', '1', {packages: ['gauge']});
 google.load('visualization', '1', {packages: ['areachart']});
 
 function init() {
-	//create earth
-	google.earth.createInstance('earth', initCB, failureCB);
-	
 	//create map
 	this.map = new GMap2(document.getElementById("map"));
 	initMap();
+	
+	//create earth
+	google.earth.createInstance('earth', initCB, failureCB);
+	
+	
 	drawFuelGauge();
 	drawAirChart();
 	drawWindChart();
 }
 function initMap() {
 
-	//set inital view of map
-	map.setCenter(new GLatLng(39.46, -74.572778), 12);
+
 	map.enableScrollWheelZoom();
 	// Add GHierarchicalMapTypeControl
 	map.addMapType(G_PHYSICAL_MAP);
 	
 	//add map over lay
-	//var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/fd.kml');
-	var geoXml = new GGeoXml('http://localhost:3000/flights.kml');
+	
+	var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/fd.kml');
+	//var geoXml = new EGeoXml("geoXml", map, "http://localhost:3000/flights.kml");
+	//set inital view of map
+	// var options = {noshadow: true}; //many options available
+	// var csGeoXml = new CsGeoXml('csGeoXml', map, 'http://localhost:3000/flights.kml', options);
+	// var handle = GEvent.addListener(csGeoXml, 'parsed', function () {
+		// GEvent.removeListener(handle);
+		// map.addOverlay(csGeoXml);
+	// });
 	map.addOverlay(geoXml);
+	map.setCenter(new GLatLng(39.46, -74.572778), 12);
 }
 
 function initCB(instance) {
 	
 	
 	updateFuelGauge();
+	updateAirChart();
+	updateAirChart();
 	//get the kml for the map and earth from this URL
 	var href = 'http://localhost:3000/flights.kml';
 	
@@ -140,6 +153,11 @@ function updateAirChart(){
 	airChart.addRows(1);
 	airChart.setCell(3, 0, '14:00');
 	airChart.setCell(3, 1, 281.758);
+	// Create and draw the visualization.
+	//$('#temp_chart').empty();
+    //new google.visualization.AreaChart(document.getElementById('temp_chart')).
+    //      draw(airChart, null);
+	v.draw(airChart,null);
 }
 
 function drawAirChart() {
@@ -156,8 +174,9 @@ function drawAirChart() {
       airChart.setCell(2, 1, 281.758);
     
       // Create and draw the visualization.
-      new google.visualization.AreaChart(document.getElementById('temp_chart')).
-          draw(airChart, null);
+	  document.getElementById('wind_mag').empty();
+      v = new google.visualization.AreaChart(document.getElementById('temp_chart'));
+	  v.draw(airChart, null);
 }
 
 function drawWindChart() {

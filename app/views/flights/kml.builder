@@ -1,4 +1,4 @@
-xml = Builder::XmlMarkup.new(:indent => 2)
+xml = Builder::XmlMarkup.new( :indent => 2)
 
 xml.instruct! :xml
 

@@ -4,5 +4,10 @@ class GuiController < ApplicationController
       format.html # index.html.erb
     end
   end
-
+  def select
+    @flights = Flight.all
+    respond_to do |format|
+      format.html
+    end
+  end
 end
