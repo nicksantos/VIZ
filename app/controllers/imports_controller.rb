@@ -38,10 +38,7 @@ class ImportsController < ApplicationController
     if lines.size > 0
       @import.processed = lines.size
       lines.each do |line|
-        case @import.datatype
-        when "releases"
           new_release(line)
-        end
       end
       @import.save
       flash[:notice] = "CSV data processing was successful."
