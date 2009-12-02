@@ -25,10 +25,10 @@ class ImportsController < ApplicationController
 
   def show
     @import = Import.find(params[:id])
-	unless @import.processed > 0
-		import_proc_path(@import.id)
-		proc_csv
-	end
+    unless @import.processed > 0
+      import_proc_path(@import.id)
+      proc_csv
+    end
   end
 
   def proc_csv
