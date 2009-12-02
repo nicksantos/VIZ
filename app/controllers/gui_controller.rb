@@ -5,7 +5,7 @@ class GuiController < ApplicationController
     end
   end
   def select
-    @flights = Flight.all
+    @flights = Flight.find( :all, :select => 'DISTINCT Title' )
     respond_to do |format|
       format.html
     end

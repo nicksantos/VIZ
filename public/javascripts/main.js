@@ -28,20 +28,10 @@ function initMap() {
 	map.enableScrollWheelZoom();
 	// Add GHierarchicalMapTypeControl
 	map.addMapType(G_PHYSICAL_MAP);
-	
-	//add map over lay
-	
-	var geoXml = new GGeoXml('http://elvis.rowan.edu/~marzin39/fd.kml');
-	//var geoXml = new EGeoXml("geoXml", map, "http://localhost:3000/flights.kml");
-	//set inital view of map
-	// var options = {noshadow: true}; //many options available
-	// var csGeoXml = new CsGeoXml('csGeoXml', map, 'http://localhost:3000/flights.kml', options);
-	// var handle = GEvent.addListener(csGeoXml, 'parsed', function () {
-		// GEvent.removeListener(handle);
-		// map.addOverlay(csGeoXml);
-	// });
-	map.addOverlay(geoXml);
 	map.setCenter(new GLatLng(39.46, -74.572778), 12);
+	//add map over lay
+	var exml = new EGeoXml("exml", map, "http://elvis.rowan.edu/~marzin39/fd.kml", {});
+	exml.parse();
 }
 
 function initCB(instance) {
