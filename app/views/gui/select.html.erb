@@ -1,0 +1,13 @@
+<h1>Select flights</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+  </tr>
+<% @flights.each do |flight| %>
+  <tr>
+    <td><%=h flight.title %></td>
+    <td><%= link_to 'Show', flight %></td>
+  </tr>
+<% end %>
+</table>
