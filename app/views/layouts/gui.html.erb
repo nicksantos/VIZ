@@ -11,7 +11,10 @@
         <%= stylesheet_link_tag 'simple-slider' %>
     </head>
     <body>
-        <%= yield %>
+        <div id="container">
+            <p id="notice"><%= flash[:notice] %></p>
+            <%= yield %>
+        </div>>
     </body>
 </html>
     
