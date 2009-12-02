@@ -5,7 +5,7 @@ class GuiController < ApplicationController
     end
   end
   def select
-    @flights = Flight.first(:)
+    @flights = Flight.all
     respond_to do |format|
       format.html
     end

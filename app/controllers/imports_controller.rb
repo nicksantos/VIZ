@@ -45,7 +45,7 @@ class ImportsController < ApplicationController
       end
       @import.save
       flash[:notice] = "CSV data processing was successful."
-      redirect_to :action => "root"
+      redirect_to :action => "show", :id => @import.id
     else
       flash[:error] = "CSV data processing failed."
       render :action => "show", :id => @import.id
