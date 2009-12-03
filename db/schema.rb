@@ -12,6 +12,7 @@
 ActiveRecord::Schema.define(:version => 20091123204343) do
 
   create_table "flights", :force => true do |t|
+    t.string   "import_id"
     t.string   "title"
     t.integer  "time"
     t.float    "latitude"

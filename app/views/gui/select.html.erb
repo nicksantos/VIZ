@@ -3,11 +3,22 @@
 <table>
     <tr>
       <th>Title</th>
+	  <th>Import ID</th>
+	  <th>Select?</th>
+	  <th>Time Offset (sec)</th>
     </tr>
-    <% @flights.each do |flight| %>
-    <tr>
-      <td><%=h flight.title %></td>
-        <td><%= link_to 'Show', flight %></td>
-    </tr>
-    <% end %>
+	<% import_id = params[:id] %>
+	<%form_tag (:action => "index", :id => import_id) do %> 
+		<% @flights.each do |flight| %>
+		<tr>
+		  <td><%=h flight.title %></td>
+		  <td><%=h flight.import_id %> </td>
+		  <td><%= check_box_tag "flight_ids[]", flight.title %></td>
+		  <td><%= text_field "offset", flight.import_id %></td>
+		</tr>
+		<% end %>
+		<tr>
+			<td><%= submit_tag ("Open GUI") %></td>
+		</tr>
+	<%end%>
 </table>

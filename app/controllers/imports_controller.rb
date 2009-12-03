@@ -38,15 +38,12 @@ class ImportsController < ApplicationController
     if lines.size > 0
       @import.processed = lines.size
       lines.each do |line|
-        case @import.datatype
-        when "releases"
           new_release(line)
-        end
       end
       @import.save
       flash[:notice] = "CSV data processing was successful."
 
-      redirect_to :action => "show", :id => @import.id
+      redirect_to :controller => "gui", :action => "select", :id => @import.id
     else
       flash[:error] = "CSV data processing failed."
       render :action => "show", :id => @import.id
@@ -93,6 +90,7 @@ private
       params[:flight]["bank_angle"] = line[17]
       params[:flight]["config"] = line[18]
       params[:flight]["lift_coeff"] = line[19]
+	  params[:flight]["import_id"] = @import.id
       flight = Flight.new(params[:flight])
     flight.save
   end
