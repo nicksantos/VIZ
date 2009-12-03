@@ -7,7 +7,8 @@
 	  <th>Select?</th>
 	  <th>Time Offset (sec)</th>
     </tr>
-	<%form_tag (:action => "index") do %> 
+	<% import_id = params[:id] %>
+	<%form_tag (:action => "index", :id => import_id) do %> 
 		<% @flights.each do |flight| %>
 		<tr>
 		  <td><%=h flight.title %></td>

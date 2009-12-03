@@ -1,5 +1,7 @@
 class GuiController < ApplicationController
   def index
+  @flight_ids = params[:flight_ids]
+  id = params[:id]
     respond_to do |format|
       format.html # index.html.erb
     end
@@ -10,10 +12,5 @@ class GuiController < ApplicationController
     respond_to do |format|
       format.html
     end
-  end
-  
-  def loadFlights
-	@flight_ids = params[:flight_ids]
-	  
   end
 end
