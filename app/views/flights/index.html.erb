@@ -12,6 +12,7 @@
     <th>Air temp</th>
     <th>Air density</th>
     <th>Pressure</th>
+	<th>Import ID</th>
   </tr>
 
 <% @flights.each do |flight| %>
@@ -26,6 +27,7 @@
     <td><%=h flight.air_temp %></td>
     <td><%=h flight.air_density %></td>
     <td><%=h flight.pressure %></td>
+	<td><%=h flight.import_id %></td>
     <td><%= link_to 'Show', flight %></td>
     <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
     <td><%= link_to 'Destroy', flight, :confirm => 'Are you sure?', :method => :delete %></td>

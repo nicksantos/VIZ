@@ -90,6 +90,7 @@ private
       params[:flight]["bank_angle"] = line[17]
       params[:flight]["config"] = line[18]
       params[:flight]["lift_coeff"] = line[19]
+	  params[:flight]["import_id"] = @import.id
       flight = Flight.new(params[:flight])
     flight.save
   end

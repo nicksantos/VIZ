@@ -28,10 +28,11 @@ function initMap() {
 	map.enableScrollWheelZoom();
 	// Add GHierarchicalMapTypeControl
 	map.addMapType(G_PHYSICAL_MAP);
-	map.setCenter(new GLatLng(39.46, -74.572778), 12);
 	//add map over lay
-	var exml = new EGeoXml("exml", map, "http://elvis.rowan.edu/~marzin39/fd.kml", {});
-	exml.parse();
+	//var exml = new EGeoXml("exml", map, "/flights.kml");
+	//var exml = new GeoXml("exml", map, "flights.kml" , {});
+	//exml.parse();
+	map.setCenter(new GLatLng(39.46, -74.572778), 12);
 }
 
 function initCB(instance) {

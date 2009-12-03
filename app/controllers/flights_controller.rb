@@ -2,12 +2,12 @@ class FlightsController < ApplicationController
   # GET /flights
   # GET /flights.xml
   def index
-    @flights = Flight.all
     #Below will only get flights matching title but can by a variable that we set enables us to get specific flights from all
     #@flights = Flight.all(:conditions => [ "title = ?", "ABC006_006"])
     flight1 = "ABC006_006"
-    flight2 = "ABC007_007"
-    @flights = Flight.all(:conditions => [ "title = ? OR title = ?", flight1 , flight2] )
+    flight2 = "ABC008_008"
+	importId = "2"
+    @flights = Flight.all(:conditions => [ "(title = ? OR title = ?) AND import_id = ?", flight1 , flight2, importId] )
     
     respond_to do |format|
       format.html # index.html.erb
