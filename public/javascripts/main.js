@@ -39,8 +39,8 @@ function initCB(instance) {
 	
 	
 	updateFuelGauge();
-	updateAirChart('14:00', 100);
-	updateAirChart('14:10', 120);
+	//updateAirChart('14:00', 100);
+	//updateAirChart('14:10', 120);
 	//get the kml for the map and earth from this URL
 	var href = 'http://localhost:3000/flights.kml';
 	
