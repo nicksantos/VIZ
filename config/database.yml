@@ -21,11 +21,11 @@ production:
   pool: 5
   timeout: 5000
   
-#weather:
-#  adapter: oracle_enhanced
-#  host: 150.250.190.26
-#  database: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(Host=150.250.190.26 )(Port=1521)))(CONNECT_DATA=(SERVICE_NAME= CPAT02)))
-#  username: URET01
-#  password: BOSUN
-#  encoding: utf8
-#  timeout: 5000
+weather:
+  adapter: oracle_enhanced
+  host: 150.250.190.26
+  database: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(Host=150.250.190.26 )(Port=1521)))(CONNECT_DATA=(SERVICE_NAME= CPAT02)))
+  username: URET01
+  password: BOSUN
+  encoding: utf8
+  timeout: 5000
