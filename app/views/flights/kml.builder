@@ -58,7 +58,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
         end
         xml.tag!("gx:AnimatedUpdate"){
           xml.tag!("gx:duration"){xml.text! "#{duration}"}
-          #xml.flyToMode("smooth")
+		  xml.tag!("gx:flyToMode"){xml.text! "smooth"}
           xml.Update{
             xml.targetHref()
             xml.Change{
@@ -76,11 +76,11 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
       
         xml.tag!("gx:FlyTo"){ 
           xml.tag!("gx:duration"){xml.text! "#{duration}"}
-          xml.flyToMode("smooth")
+          xml.tag!("gx:flyToMode"){xml.text! "smooth"}
           xml.Camera{
             xml.latitude(flight.latitude)
             xml.longitude(flight.longitude)
-            xml.altitude(flight.altitude + 5000)
+            xml.altitude(flight.altitude + 2000)
             xml.heading(heading)
             xml.tilt(0)
             xml.roll(0)
