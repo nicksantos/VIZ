@@ -2,3 +2,10 @@
 <script type="text/javascript"src="http://www.google.com/jsapi?hl=en&key=ABQIAAAAEfSLCUVyg6BZMtNQtWuyVhTJQa0g3IQ9GZqIMmInSLzwtGDKaBRvzRb4XhjAdSgu6OubeOmvFtUr7A"></script>
 <script type="text/javascript" src="http://earth-api-samples.googlecode.com/svn/trunk/lib/kmldomwalk.js" ></script>
 <script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;sensor=true&amp;key=ABQIAAAAEfSLCUVyg6BZMtNQtWuyVhTJQa0g3IQ9GZqIMmInSLzwtGDKaBRvzRb4XhjAdSgu6OubeOmvFtUr7A" type="text/javascript"></script>
+<script type="text/javascript">
+	<% fIds = params[:flight_ids]%>
+	<% l = fIds.length %>
+	var flightIds = [ 
+	<%0.upto(l-1) do |i|%> 	<% if i != l-1 %>"<%= fIds[i] %>",<%else %>"<%= fIds[i] %>"<% end %><% end %>];
+	var importId = <%= params[:id]%>;
+</script>

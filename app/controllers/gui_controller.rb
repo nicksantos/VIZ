@@ -6,6 +6,7 @@ class GuiController < ApplicationController
       format.html # index.html.erb
     end
   end
+
   def select
 	id = params[:id]
     @flights = Flight.find( :all, :select => 'DISTINCT Title, import_id', :conditions => ["import_id = ?", id])

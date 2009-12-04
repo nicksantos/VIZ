@@ -1,10 +1,13 @@
-var v;
 var ge;
 var map;
-var fuel_gauge_viz;
-var air_temp_viz;
-var air_temp_rows;
-var wind_mag_viz;
+var fuelGauge;
+var fuelGaugeViz;
+var airTempChart;
+var airTempRows;
+var airTempViz;
+var windMagChart;
+var windMagRows;
+var windMagViz;
 google.load("earth", "1");
 google.load("maps", "2.x");
 google.load('visualization', '1', {packages: ['gauge']});
@@ -14,10 +17,8 @@ function init() {
   //create map
   this.map = new GMap2(document.getElementById("map"));
   initMap();
-  
   //create earth
-  google.earth.createInstance('earth', initCB, failureCB);
-  
+  google.earth.createInstance('earth', initCB, failureCB);  
   
   drawFuelGauge();
   drawAirChart();
@@ -41,9 +42,9 @@ function initCB(instance) {
   
   updateFuelGauge();
   updateAirChart('14:00', 100.00);
-  updateAirChart('14:10', 120.00);
+  updateWindChart('14:10', 120.00);
   //get the kml for the map and earth from this URL
-  var href = 'http://localhost:3000/flights.kml';
+  var href = 'http://localhost:3000/flights.kml?id=1&flightId=ABC006_006';
   
   ge = instance;
   ge.getWindow().setVisibility(true);
@@ -62,8 +63,8 @@ function initCB(instance) {
   ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
   
   // add some layers
-  ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
-  ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+  ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
+  ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
   
   // create the tour by fetching it out of a KML file
   google.earth.fetchKml(ge, href, function(kmlObject) {
@@ -86,19 +87,6 @@ function initCB(instance) {
       return false; // stop the DOM walk here.
     }
     });
-    
-    // make the slider for dragging the tour timeline
-    var slider = new SimpleSlider(document.getElementById('slider-container'), {
-    onSlide: function(pos) {
-      ge.getTourPlayer().setCurrentTime(pos);
-    },
-    max: ge.getTourPlayer().getDuration(),
-    formatPosFn: formatTime
-    });
-  
-    window.setInterval(function() {
-    slider.setPosition(ge.getTourPlayer().getCurrentTime());
-    }, 50);
   });
   
    google.earth.addEventListener(ge.getView(), 'viewchange', function(evt) {
@@ -201,59 +189,51 @@ function drawFuelGauge() {
       fuelGauge.setValue(0, 0, '');
       fuelGauge.setValue(0, 1, 80);      
       // Create and draw the visualization.
-      new google.visualization.Gauge(document.getElementById('gauge')).
-          draw(fuelGauge, null);
+      fuelGaugeViz = new google.visualization.Gauge(document.getElementById('gauge'));
+      fuelGaugeViz.draw(fuelGauge, null);
 }
 
 function drawAirChart() {
       // Create and populate the data table.
-      this.airChart = new google.visualization.DataTable();
-      airChart.addColumn('string', 'Time');
-      airChart.addColumn('number', 'Temp(K)');
-      airChart.addRows(3);
-      airChart.setCell(0, 0, '13:30');
-      airChart.setCell(1, 0, '13:40');
-      airChart.setCell(2, 0, '13:50');
-      airChart.setCell(0, 1, 281.744);
-      airChart.setCell(1, 1, 281.752);
-      airChart.setCell(2, 1, 281.758);
-    air_temp_rows = 2;
+      this.airTempChart = new google.visualization.DataTable();
+      airTempChart.addColumn('string', 'Time');
+      airTempChart.addColumn('number', 'Temp(K)');
+	  airTempRows = 0;
       // Create and draw the visualization.
-    document.getElementById('wind_mag').empty();
-      v = new google.visualization.AreaChart(document.getElementById('temp_chart'));
-    v.draw(airChart, null);
+    airTempViz=new google.visualization.AreaChart(document.getElementById('temp_chart'));
+    airTempViz.draw(airTempChart, null);
 }
 
 function drawWindChart() {
     // Create and populate the data table.
-    var windChart = new google.visualization.DataTable();
-    windChart.addColumn('string', 'Time');
-    windChart.addColumn('number', 'Temp(K)');
-    windChart.addRows(3);
-    windChart.setCell(0, 0, '13:30');
-    windChart.setCell(1, 0, '13:40');
-    windChart.setCell(2, 0, '13:50');
-    windChart.setCell(0, 1, 5.821);
-    windChart.setCell(1, 1, 5.803);
-    windChart.setCell(2, 1, 5.79);
-  
+    windMagChart = new google.visualization.DataTable();
+    windMagChart.addColumn('string', 'Time');
+    windMagChart.addColumn('number', 'Knots');
+	windMagRows =0;
     // Create and draw the visualization.
-    new google.visualization.AreaChart(document.getElementById('wind_mag')).
-        draw(windChart, null);
+    windMagViz =new google.visualization.AreaChart(document.getElementById('wind_mag'));
+    windMagViz.draw(windMagChart, null);
 }
 
-function updateFuelGauge() {
-  fuelGauge.setValue(0, 1, 100);
-  new google.visualization.Gauge(document.getElementById('gauge')).
-          draw(fuelGauge, null);
+function updateFuelGauge(value) {
+  fuelGauge.setValue(0, 1, value);
+  fuelGaugeViz.draw(fuelGauge, null);
 }
 
 function updateAirChart(time, value){
-  var rows = air_temp_rows++;
-  airChart.addRows(1);
-  airChart.setCell(air_temp_rows, 0, time);
-  airChart.setCell(air_temp_rows, 1, value);
-  v.draw(airChart,null);
+  airTempChart.addRows(1);
+  airTempChart.setCell(airTempRows, 0, time);
+  airTempChart.setCell(airTempRows, 1, value);
+  airTempRows++;
+  airTempViz.draw(airTempChart,null);
+}
+
+function updateWindChart(time, value){
+  windMagChart.addRows(1);
+  windMagChart.setCell(windMagRows, 0, time);
+  windMagChart.setCell(windMagRows, 1, value);
+  windMagRows++;
+  windMagViz.draw(windMagChart,null);
 }
 
 function formatTime(sec) {

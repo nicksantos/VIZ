@@ -1,5 +1,4 @@
 <h1>Select flights</h1>
-
 <table>
     <tr>
       <th>Title</th>
@@ -7,14 +6,14 @@
 	  <th>Select?</th>
 	  <th>Time Offset (sec)</th>
     </tr>
-	<% import_id = params[:id] %>
+	<%import_id = params[:id] %>
 	<%form_tag (:action => "index", :id => import_id) do %> 
 		<% @flights.each do |flight| %>
 		<tr>
 		  <td><%=h flight.title %></td>
 		  <td><%=h flight.import_id %> </td>
 		  <td><%= check_box_tag "flight_ids[]", flight.title %></td>
-		  <td><%= text_field "offset", flight.import_id %></td>
+		  <td><%= text_field "offsets", flight.import_id %></td>
 		</tr>
 		<% end %>
 		<tr>
