@@ -8,12 +8,12 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 	xml.Model("id"=>"model"){
 		xml.altitudeMode("absolute")
 		xml.Location("id"=>"planeLocation"){
-			xml.latitude(@flights[1].latitude)
-			xml.longitude(@flights[1].longitude)
-			xml.altitude(@flights[1].altitude)
+			xml.latitude(@flights[0].latitude)
+			xml.longitude(@flights[0].longitude)
+			xml.altitude(@flights[0].altitude)
 		}
 
-		xml.Orientation{
+		xml.Orientation("id"=>"planeOrientation"){
 			xml.heading(0)
 			xml.tilt(0)
 			xml.roll(0)
@@ -46,10 +46,13 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 				}
 			}			
 			
-		   @flights.each do |flight,i|
-		   
-		   xml.tag!("gx:AnimatedUpdate"){ 
-				xml.tag!("gx:duration"){xml.text! "#{2}"}
+			i=0
+		   @flights.each do |flight|
+		   xml.tag!("gx:AnimatedUpdate"){
+				if i != @flights.length-1
+					xml.tag!("gx:duration"){xml.text! "#{@flights[i+1].time - @flights[i].time}"} 
+				end
+				xml.flyToMode("smooth")
 				xml.Update{
 					xml.targetHref()
 					xml.Change{
@@ -58,23 +61,20 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 							xml.longitude(flight.longitude)
 							xml.altitude(flight.altitude)
 						}
-					
-					
-					xml.Model("targetId"=>"model"){
-						xml.Orientation{
+						xml.Orientation("targetId"=>"planeOrientation"){
 							xml.heading(flight.heading)
 							xml.tilt(0)
 							xml.roll(0)
 						}
-						}
-					
 					}
-				}
+				}	
 			}
 						
 			xml.tag!("gx:FlyTo"){ 
-				xml.tag!("gx:duration"){xml.text! "#{2}"}
-				xml.flyToMode("smooth");
+				if i != @flights.length-1
+					xml.tag!("gx:duration"){xml.text! "#{@flights[i+1].time - @flights[i].time}"} 
+				end
+				xml.flyToMode("smooth")
 				xml.Camera{
 					xml.latitude(flight.latitude)
 					xml.longitude(flight.longitude)
@@ -85,6 +85,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 					xml.altitudeMode("absolute")
 				}
 			}
+			i = i + 1
 		   end
 		}
 	}
