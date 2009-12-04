@@ -3,6 +3,9 @@ xml.instruct! :xml
 xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www.google.com/kml/ext/2.2" ) do
   xml.Document {
   xml.name("Tour")
+  nextPt = GeoKit::LatLng.normalize([@flights[1].latitude, @flights[1].longitude])
+  currentPt = GeoKit::LatLng.normalize([@flights[0].latitude, @flights[0].longitude])
+  heading = nextPt.heading_from(currentPt)
   xml.Placemark{
   xml.Model("id"=>"model"){
     xml.altitudeMode("absolute")
@@ -11,9 +14,9 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
       xml.longitude(@flights[0].longitude)
       xml.altitude(@flights[0].altitude)
     }
-
+	
     xml.Orientation("id"=>"planeOrientation"){
-      xml.heading(@flights[0].heading)
+      xml.heading(heading)
       xml.tilt(0)
       xml.roll(0)
     }
@@ -38,7 +41,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
           xml.latitude(@flights[0].latitude)
           xml.longitude(@flights[0].longitude)
           xml.altitude(@flights[0].altitude)
-          xml.heading(@flights[0].altitude)
+          xml.heading(heading)
           xml.tilt(0)
           xml.roll(0)
           xml.altitudeMode("absolute")
@@ -56,6 +59,12 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
           currentPt = GeoKit::LatLng.normalize([@flights[i].latitude, @flights[i].longitude])
           heading = nextPt.heading_from(currentPt)
         end
+		lastPtlat = @flights[i].latitude
+		lastPtlon = @flights[i].longitude
+		if i != 0
+			lastPtlat = @flights[i - 1].latitude
+			lastPtlon = @flights[i - 1].longitude
+		end
         xml.tag!("gx:AnimatedUpdate"){
           xml.tag!("gx:duration"){xml.text! "#{duration}"}
 		  xml.tag!("gx:flyToMode"){xml.text! "smooth"}
@@ -73,19 +82,27 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
             } 
           } 
         }    
-      
         xml.tag!("gx:FlyTo"){ 
           xml.tag!("gx:duration"){xml.text! "#{duration}"}
           xml.tag!("gx:flyToMode"){xml.text! "smooth"}
-          xml.Camera{
-            xml.latitude(flight.latitude)
+          #xml.Camera{
+          #  xml.latitude(lastPtlat)
+          #  xml.longitude(lastPtlon)
+          #  xml.altitude(flight.altitude)
+          #  xml.heading(heading)
+          #  xml.tilt(90)
+          #  xml.roll(0)
+          #  xml.altitudeMode("absolute")
+          #}
+		  xml.LookAt{
+			xml.latitude(flight.latitude)
             xml.longitude(flight.longitude)
-            xml.altitude(flight.altitude + 2000)
-            xml.heading(heading)
-            xml.tilt(0)
-            xml.roll(0)
-            xml.altitudeMode("absolute")
-          }
+            xml.altitude(flight.altitude+20)
+			xml.range(700)
+			xml.tilt(60)
+			xml.heading(heading)
+			xml.altitudeMode("relativeToGround")
+		  }
         }
       end 
   }
@@ -108,11 +125,6 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
         xml.visibility("1")
         xml.open("1")
         xml.styleUrl("\#shadedDot")
-        xml.BalloonStyle{
-          xml.bgcolor("ffffffff")
-          xml.textcolor("ff000000")
-          xml.text{xml.cdata!("$[name]<p>[discription]")}
-        }
         xml.Point{
           xml.extrude("1")
           xml.altitudeMode("absolute")
