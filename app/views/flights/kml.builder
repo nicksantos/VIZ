@@ -1,6 +1,10 @@
 xml = Builder::XmlMarkup.new(:indent => 2)
 xml.instruct! :xml
 
+lat = []
+lon = []
+alt = []
+
 xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www.google.com/kml/ext/2.2" ) do
   xml.Document {
   xml.name("Tour")
@@ -14,15 +18,15 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 		}
 
 		xml.Orientation("id"=>"planeOrientation"){
-			xml.heading(0)
+			xml.heading(@flights[0].heading)
 			xml.tilt(0)
 			xml.roll(0)
 		}
 
 		xml.Scale{
-			xml.x(20)
-			xml.y(20)
-			xml.z(20)
+			xml.x(15)
+			xml.y(15)
+			xml.z(15)
 		}
 		xml.Link{
 			xml.href("http://localhost:3000/images/hawk.dae")
@@ -36,23 +40,42 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 			xml.FlyTo {
 				xml.tag!("gx:duration") {xml.text! "#{1}"}
 				xml.Camera{
-					xml.latitude(@flights[1].latitude)
-					xml.longitude(@flights[1].longitude)
-					xml.altitude(@flights[1].altitude)
-					xml.heading(34)
+					xml.latitude(@flights[0].latitude)
+					xml.longitude(@flights[0].longitude)
+					xml.altitude(@flights[0].altitude)
+					xml.heading(@flights[0].altitude)
 					xml.tilt(0)
 					xml.roll(0)
 					xml.altitudeMode("absolute")
 				}
 			}			
 			
-			i=0
+		   i=0
+		   heading = 0
+		   duration = 0
+		   from = String.new
+		   to = String.new
+		   
 		   @flights.each do |flight|
+		   
+		   lat << flight.latitude
+		   lon << flight.longitude
+		   alt << flight.altitude
+		   
+		   if i != @flights.length-1
+				duration = @flights[i+1].time - @flights[i].time
+				to << @flights[i+1].latitude.to_s << ","
+				to << @flights[i+1].longitude.to_s
+				from << @flights[i].latitude.to_s << ","
+				from << @flights[i].longitude.to_s
+				nextPt = GeoKit::LatLng.normalize(to)
+				currentPt = GeoKit::LatLng.normalize(from)
+				heading = nextPt.heading_from(currentPt)	
+			end
+		   
 		   xml.tag!("gx:AnimatedUpdate"){
-				if i != @flights.length-1
-					xml.tag!("gx:duration"){xml.text! "#{@flights[i+1].time - @flights[i].time}"} 
-				end
-				xml.flyToMode("smooth")
+				xml.tag!("gx:duration"){xml.text! "#{duration}"}
+				#xml.flyToMode("smooth")
 				xml.Update{
 					xml.targetHref()
 					xml.Change{
@@ -62,24 +85,20 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 							xml.altitude(flight.altitude)
 						}
 						xml.Orientation("targetId"=>"planeOrientation"){
-							xml.heading(flight.heading)
-							xml.tilt(0)
-							xml.roll(0)
+							xml.heading(heading)
 						}
 					}
 				}	
 			}
 						
 			xml.tag!("gx:FlyTo"){ 
-				if i != @flights.length-1
-					xml.tag!("gx:duration"){xml.text! "#{@flights[i+1].time - @flights[i].time}"} 
-				end
+				xml.tag!("gx:duration"){xml.text! "#{duration}"}
 				xml.flyToMode("smooth")
 				xml.Camera{
 					xml.latitude(flight.latitude)
 					xml.longitude(flight.longitude)
-					xml.altitude(flight.altitude + 4000)
-					xml.heading(34)
+					xml.altitude(flight.altitude + 5000)
+					xml.heading(heading)
 					xml.tilt(0)
 					xml.roll(0)
 					xml.altitudeMode("absolute")
@@ -98,46 +117,52 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
 		}
 	
     @flights.each do |flight|
-
-    xml.Placemark {
-	  xml.name(Time.at(flight.time).getgm.strftime("%H:%M:%S")) #Placeholder we need to be able to get the name of the csv file
-      xml.title(flight.time)
-      xml.description {
-		xml.cdata!("#{flight.title}<br>time = #{flight.time}<br>long = #{flight.latitude}  &deg;<br>lat = #{flight.longitude} &deg;<br>alt = #{flight.altitude} feet<br>")
-      }
-      xml.visibility("1")
-      xml.open("1")
-      xml.styleUrl("\#shadedDot")
-	  xml.BalloonStyle{
-			 xml.bgcolor("ffffffff")
-			 xml.textcolor("ff000000")
-			 xml.text{xml.cdata!("$[name]<p>[discription]")}
+		xml.Placemark {
+		  xml.name(Time.at(flight.time).getgm.strftime("%H:%M:%S")) #Placeholder we need to be able to get the name of the csv file
+		  xml.title(flight.time)
+		  xml.description {
+			xml.cdata!("#{flight.title}<br>time = #{flight.time}<br>long = #{flight.latitude}  &deg;<br>lat = #{flight.longitude} &deg;<br>alt = #{flight.altitude} feet<br>")
+		  }
+		  xml.visibility("1")
+		  xml.open("1")
+		  xml.styleUrl("\#shadedDot")
+		  xml.BalloonStyle{
+				 xml.bgcolor("ffffffff")
+				 xml.textcolor("ff000000")
+				 xml.text{xml.cdata!("$[name]<p>[discription]")}
+			}
+		  xml.Point{
+			xml.extrude("1")
+			xml.altitudeMode("absolute")
+			xml.coordinates("#{flight.longitude}, #{flight.latitude}, #{flight.altitude}")
+		  }
 		}
-      xml.Point{
-        xml.extrude("1")
-        xml.altitudeMode("absolute")
-        xml.coordinates("#{flight.longitude}, #{flight.latitude}, #{flight.altitude}")
-      }
-    }
     end
-	xml.Placemark{
+	xml.Style("id"=>"path"){
 		xml.LineStyle{
 			xml.color("7fff00ff")
-			xml.width("15")
+			xml.width("8")
 		}
 		xml.PolyStyle{
 			xml.color("7fff00ff")
 		}
-
+	}
+	cord = String.new
+	i=0
+	while i < lat.length
+		cord << lon[i].to_s << "," << lat[i].to_s << "," << alt[i].to_s << "\n"
+		i+=1				
+	end
+	xml.Placemark{
 		xml.name("Absolute")
-		xml.visibility("1")
-		
+		xml.styleUrl("\#path")
 		xml.LineString{
 			xml.tessellate("1")
 			xml.altitudeMode("absolute")
-			xml.coordinates("-74.572778, 39.46, 0.0, -74.621667, 39.435278, 1183.3")
+			xml.coordinates(cord)
 		}
 	}
 	} 
 }	
 end
+	
