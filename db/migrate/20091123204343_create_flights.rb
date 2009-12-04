@@ -2,7 +2,7 @@ class CreateFlights < ActiveRecord::Migration
   def self.up
     create_table :flights do |t|
       t.string :import_id
-	  t.string :title
+    t.string :title
       t.integer :time
       t.float :latitude
       t.float :longitude
