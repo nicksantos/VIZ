@@ -77,9 +77,6 @@ function initCB(instance) {
 	
 	  // Show the entire KML file in the plugin.
 	  ge.getFeatures().appendChild(kmlObject);
-	  var arr = xml2array(href);
-	  
-	  $('#time_value').html("<div>"+arr['xml']['kml']['Document'][0]);
 	  
 	  // Walk the DOM looking for a KmlTour
 	  walkKmlDom(kmlObject, function() {
