@@ -9,11 +9,6 @@
       <unit name="meters" meter="1.0"/>
       <up_axis>Z_UP</up_axis>
    </asset>
-   <library_images>
-      <image id="__Glass_Blue_Tint_-image" name="__Glass_Blue_Tint_-image">
-         <init_from>../images/__Glass_Blue_Tint_.jpg</init_from>
-      </image>
-   </library_images>
    <library_materials>
       <material id="__Red_ID" name="__Red_">
          <instance_effect url="#__Red_-effect"/>

@@ -1,6 +1,3 @@
-flightId = params[:flightId]
-importId = params[:id]
-@flights = Flight.all(:conditions => [ "title = ? AND import_id = ?", flightId, importId] )
 xml = Builder::XmlMarkup.new(:indent => 2)
 xml.instruct! :xml
 xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www.google.com/kml/ext/2.2" ) do
@@ -82,15 +79,6 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
         xml.tag!("gx:FlyTo"){ 
           xml.tag!("gx:duration"){xml.text! "#{duration}"}
           xml.tag!("gx:flyToMode"){xml.text! "smooth"}
-          #xml.Camera{
-          #  xml.latitude(lastPtlat)
-          #  xml.longitude(lastPtlon)
-          #  xml.altitude(flight.altitude)
-          #  xml.heading(heading)
-          #  xml.tilt(90)
-          #  xml.roll(0)
-          #  xml.altitudeMode("absolute")
-          #}
 		  xml.LookAt{
 			xml.latitude(flight.latitude)
             xml.longitude(flight.longitude)

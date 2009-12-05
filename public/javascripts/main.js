@@ -30,31 +30,36 @@ function initMap() {
   map.enableScrollWheelZoom();
   // Add GHierarchicalMapTypeControl
   map.addMapType(G_PHYSICAL_MAP);
-  //add map over lay
-  //var exml = new EGeoXml("exml", map, "/flights.kml");
-  //var exml = new GeoXml("exml", map, "flights.kml" , {});
-  //exml.parse();
-  //map.setCenter(new GLatLng(39.46, -74.572778), 12);
 }
 
 function initCB(instance) {
+  //get the kml for the map and earth from this URL 
+  var href = 'http://localhost:3000/flights.kml?id='+importId+'&flightId='+flightIds[0];
+  //setup google earth window
+  ge = instance;
+  ge.getWindow().setVisibility(true);
+  // add a navigation control
+  ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
   
+  // remove some layers
+  ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
+  ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
+  
+	// Create a new LookAt
+	var lookAt = ge.createLookAt('');
+
+	// Set the position values
+	lookAt.setLatitude(39.46);
+	lookAt.setLongitude(-74.572778);
+	lookAt.setRange(1000.0); //default is 0.0
+
+	// Update the view in Google Earth
+	ge.getView().setAbstractView(lookAt);
   
   updateFuelGauge(80);
   updateAirChart('14:00', 100.00);
   updateWindChart('14:00', 120.00);
-  //get the kml for the map and earth from this URL
-  var href = 'http://localhost:3000/flights.kml?id=1&flightId=ABC006_006';
-  
-  ge = instance;
-  ge.getWindow().setVisibility(true);
-  
-  // add a navigation control
-  ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
-  
-  // add some layers
-  ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
-  ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
+
   
   // create the tour by fetching it out of a KML file
   google.earth.fetchKml(ge, href, function(kmlObject) {
