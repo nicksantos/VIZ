@@ -60,14 +60,8 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
           duration = @flights[i+1].time - @flights[i].time
           nextPt = GeoKit::LatLng.normalize([@flights[i+1].latitude, @flights[i+1].longitude])
           currentPt = GeoKit::LatLng.normalize([@flights[i].latitude, @flights[i].longitude])
-          heading = nextPt.heading_from(currentPt)
+		  heading = nextPt.heading_from(currentPt)		  
         end
-		lastPtlat = @flights[i].latitude
-		lastPtlon = @flights[i].longitude
-		if i != 0
-			lastPtlat = @flights[i - 1].latitude
-			lastPtlon = @flights[i - 1].longitude
-		end
         xml.tag!("gx:AnimatedUpdate"){
           xml.tag!("gx:duration"){xml.text! "#{duration}"}
 		  xml.tag!("gx:flyToMode"){xml.text! "smooth"}
