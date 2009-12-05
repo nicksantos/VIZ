@@ -5,11 +5,14 @@ xml.instruct! :xml
 xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www.google.com/kml/ext/2.2" ) do
   xml.Document {
     xml.name("weather") #Placeholder
-    weather_points.each do |weather_data|
+    l = @weather_points.length
+    0.upto(l-1) do |i|
+      wpoint = @weather_points[i]
+      wvalue = @weather_values[i]
     xml.Placemark {
-      xml.title(weather_data.time)
+      xml.title(wvalue.anl_hr)
       xml.description {
-              xml.cdata!("#{weather_data.title}<br>time = #{weather_data.time}<br>long = #{weather_data.longitude}  &deg;<br>lat = #{weather_data.latitude} &deg;<br>alt = #{weather_data.altitude} feet<br>")
+              xml.cdata!("time = #{wvalue.anl_hr}<br>long = #{wpoint.lon}  &deg;<br>lat = #{wpoint.lat} &deg;<br>alt = #{wvalue.geopot_alt} feet<br>")
       }
     xml.visibility("1")
     xml.open("1")
@@ -26,15 +29,15 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
         xml.text{xml.cdata!("$[name]<p>[discription]")}
       }
     }
-    xml.Model("id"=>"windbarb#{weather_data.magnitude/5*5}"){
+    xml.Model("id"=>"windbarb#{wvalue.wind_mag/5*5}"){
       xml.altitudeMode("relativeToGround")
       xml.Location{
-        xml.longitude("#{weather_data.longitude}")
-        xml.latitude("#{weather_data.latitude}")
-        xml.altitude("#{weather_data.altitude}")
+        xml.longitude("#{wpoint.lon}")
+        xml.latitude("#{wpoint.lat}")
+        xml.altitude("#{wvalue.geopot_alt}")
       }
       xml.Orientation{
-        xml.heading("#{weather_data.heading}")
+        xml.heading("#{wvalue.wind_dir}")
         xml.tilt("0")
         xml.roll("0")
       }
@@ -44,7 +47,7 @@ xml.kml( "kmlns" => "http://www.opengis.net/kml/2.2" , "xmlns:gx" => "http://www
         xml.z("1");
       }
       xml.Link{
-        xml.href("windbarb#{weather_data.magnitude/5*5}.dae")
+        xml.href("windbarb#{wvalue.wind_mag/5*5}.dae")
       }
     }
       #xml.Point{

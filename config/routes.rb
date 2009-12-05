@@ -45,7 +45,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :imports
   map.import_proc '/import/proc/:id', :controller => "imports", :action => "proc_csv"
   ActionController::Routing::Routes.draw do |map|
-    #map.resources :albums
     map.connect ':controller/:action/:id'
     map.connect ':controller/:action/:id.:format'
   end
