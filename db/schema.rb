@@ -39,3 +39,19 @@ ActiveRecord::Schema.define(:version => 20091204052652) do
     t.datetime "updated_at"
   end
 
+  create_table "imports", :force => true do |t|
+    t.string   "datatype"
+    t.integer  "processed",        :default => 0
+    t.string   "csv_file_name"
+    t.string   "csv_content_type"
+    t.integer  "csv_file_size"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "weathers", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+end

@@ -28,4 +28,5 @@ weather:
   username: URET01
   password: BOSUN
   encoding: utf8
+  cursor_sharing: similar
   timeout: 5000

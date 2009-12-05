@@ -1,6 +1,9 @@
 class WeatherController < ApplicationController
   def index
-    @weather_points = WeatherValues.find_by_sql(["SELECT t1.wx_key, t2.wx_key, t1.lat,t1.lon, t2.geopot_alt,t2.anl_hr FROM wx_ruc2_nodes236 t1, wx_ruc2_values20050317new t2 WHERE t1.wx_key = substr (t2.wx_key, 1, instr (t2.wx_key,',',1,2) - 1)  AND (substr (t2.wx_key, instr (t2.wx_key,',',1, 2) + 1, length (t2.wx_key)) NOT IN ('775', '1000') OR substr (t2.wx_key, 1, instr (t2.wx_key,',',1, 2) - 1) <> '1,81') -- substr is being used to get the values before 2nd comma ',' AND t1.lat = ? AND t1.lon = ?  AND t2.geopot_alt = ? And t2.anl_hr = ?",33.57625436767503,-79.7632086877915,7136.155176037566,18])
+    @weather_points = Weather.find_by_sql('SELECT t2.wx_key, t1.lat,t1.lon, t2.geopot_alt,t2.anl_hr,t2.wind_mag,t2.wind_dir_to FROM wx_ruc2_nodes236 t1, wx_ruc2_values20050317new t2 WHERE t1.wx_key = substr (t2.wx_key, 1, instr (t2.wx_key,\',\',1,2) - 1) and t1.LAT > 32 and t1.LAT < 33 and t1.LON > -80 and t1.LON < -79 and t2.GEOPOT_ALT < 2000 and t2.GEOPOT_ALT > 1000 and t2.ANL_HR = 18')
+    wxval = @weather_points[0]
+    @weather_values = WeatherValues.find(wxval)
+    
     respond_to do |format|
       format.html # index.html.erb
       format.kml { render :action => "kml" }
