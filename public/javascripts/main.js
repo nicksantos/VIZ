@@ -34,30 +34,20 @@ function initMap() {
   //var exml = new EGeoXml("exml", map, "/flights.kml");
   //var exml = new GeoXml("exml", map, "flights.kml" , {});
   //exml.parse();
-  map.setCenter(new GLatLng(39.46, -74.572778), 12);
+  //map.setCenter(new GLatLng(39.46, -74.572778), 12);
 }
 
 function initCB(instance) {
   
   
-  updateFuelGauge();
+  updateFuelGauge(80);
   updateAirChart('14:00', 100.00);
-  updateWindChart('14:10', 120.00);
+  updateWindChart('14:00', 120.00);
   //get the kml for the map and earth from this URL
   var href = 'http://localhost:3000/flights.kml?id=1&flightId=ABC006_006';
   
   ge = instance;
   ge.getWindow().setVisibility(true);
-  //set inital view of earth
-  var la = ge.createLookAt('');
-      la.set(39.46,  -74.572778,
-        0, // altitude
-        ge.ALTITUDE_RELATIVE_TO_GROUND,
-        0, // heading
-        0, // straight-down tilt
-        10000 // range (inverse of zoom)
-        );
-    ge.getView().setAbstractView(la);
   
   // add a navigation control
   ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
@@ -90,7 +80,6 @@ function initCB(instance) {
   });
   
    google.earth.addEventListener(ge.getView(), 'viewchange', function(evt) {
-    map.clearOverlays();
 
     var totalBounds = new GLatLngBounds();
 
@@ -127,8 +116,6 @@ function initCB(instance) {
         { clickable: false });
       }
 
-      //map.addOverlay(globeBoundsPolygon);
-
       var polyBounds = globeBoundsPolygon.getBounds();
       totalBounds.extend(polyBounds.getNorthEast());
       totalBounds.extend(polyBounds.getSouthWest());
@@ -151,7 +138,6 @@ function initCB(instance) {
         '#ff0000', 2, 1.00,
         '#ff0000',    0.25,
         { clickable: false });
-      //map.addOverlay(hitTestBoundsPolygon);
 
       var polyBounds = hitTestBoundsPolygon.getBounds();
       totalBounds.extend(polyBounds.getNorthEast());
@@ -183,11 +169,10 @@ function resetTour() {
 function drawFuelGauge() {
       // Create and populate the data table.
       this.fuelGauge = new google.visualization.DataTable();
-      fuelGauge.addColumn('string', 'Label');
-      fuelGauge.addColumn('number', 'Value');
+      fuelGauge.addColumn('string', 'Fuel Gauge');
+      fuelGauge.addColumn('number', 'Weight');
       fuelGauge.addRows(3);
-      fuelGauge.setValue(0, 0, '');
-      fuelGauge.setValue(0, 1, 80);      
+      fuelGauge.setValue(0, 0, '');    
       // Create and draw the visualization.
       fuelGaugeViz = new google.visualization.Gauge(document.getElementById('gauge'));
       fuelGaugeViz.draw(fuelGauge, null);
